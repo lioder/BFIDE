@@ -1,14 +1,14 @@
 package rmi;
 
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-
 import service.ExecuteService;
 import service.IOService;
 import service.UserService;
-import serviceImpl.ExecuteServiceImpl;
+import serviceImpl.ExecuteImpl;
 import serviceImpl.IOServiceImpl;
 import serviceImpl.UserServiceImpl;
+
+import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
 
 public class DataRemoteObject extends UnicastRemoteObject implements IOService, UserService,ExecuteService{
 	/**
@@ -18,10 +18,11 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 	private IOService iOService;
 	private UserService userService;
 	private ExecuteService executeService;
+
 	protected DataRemoteObject() throws RemoteException {
 		iOService = new IOServiceImpl();
 		userService = new UserServiceImpl();
-		executeService = new ExecuteServiceImpl();
+		executeService = new ExecuteImpl();
 	}
 
 	@Override
@@ -60,8 +61,13 @@ public class DataRemoteObject extends UnicastRemoteObject implements IOService, 
 	}
 
     @Override
-    public String execute(String code,String param) throws RemoteException {
+    public String bfExecute(String code,String param) throws RemoteException {
         // TODO Auto-generated method stub
-        return executeService.execute(code,param);
+        return executeService.bfExecute(code,param);
+    }
+    @Override
+    public String ookExecute(String code,String param) throws RemoteException {
+        // TODO Auto-generated method stub
+        return executeService.ookExecute(code,param);
     }
 }

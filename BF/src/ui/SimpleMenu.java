@@ -2,8 +2,12 @@ package ui;
 
 
 import javafx.scene.control.*;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
 import rmi.RemoteHelper;
+import service.ExecuteService;
 
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -174,10 +178,16 @@ class RunMenu extends SimpleMenu{
 
     public void setAction(MainFrame mainFrame){
         getMenuItem("Execute").setOnAction(event -> {
+            String fileType = mainFrame.fileType;
             String code = mainFrame.getCode();
             String param = mainFrame.getInput();
+            String result;
             try {
-                String result = RemoteHelper.getInstance().getExecuteService().execute(code,param);
+
+                if (fileType.equals("bf")||!code.contains("o"))
+                    result = RemoteHelper.getInstance().getExecuteService().bfExecute(code, param);
+                else
+                    result = RemoteHelper.getInstance().getExecuteService().ookExecute(code, param);
                 mainFrame.setResult(result);
             } catch (RemoteException e){
                 e.printStackTrace();
